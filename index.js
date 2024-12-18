@@ -1,16 +1,106 @@
 const express = require('express');
-const fs = require('fs').promises;
+//const fs = require('fs').promises;
+const fs = require('fs');
+
 const path = require('path');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const app = express();
 const PORT = 3000;
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
+app.use(express.json());
 
 const dataPath = path.join(__dirname, 'top250.json');
 const managerPath = path.join(__dirname, 'manager.json');
 
+// functions managing manager.json
+const readManagers = () => {
+  try {
+    const data = fs.readFileSync(managerPath, 'utf8');
+    return JSON.parse(data);
+  } catch (error) {
+    console.error('Error reading managers:', error);
+    return [];
+  }
+};
+
+const writeManagers = (managers) => {
+  try {
+    fs.writeFileSync(managerPath, JSON.stringify(managers, null, 2));
+    console.log('Managers written to file successfully');
+  } catch (error) {
+    console.error('Error writing managers:', error);
+  }
+};
+
+// endpoint manager.json
+app.post('/api/auth/register', async (req, res) => {
+  const { email, password } = req.body;
+
+  // Check if email already exists
+  const managers = readManagers();
+  const existingManager = managers.find((manager) => manager.email === email);
+  if (existingManager) {
+    return res.status(400).json({ message: 'Email already exists' });
+  }
+
+  // Hash the password
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  // Generate a unique ID (you can use a library like `uuid`)
+  let newId = 1; // Adjust for existing IDs
+  if (managers.length > 0) {
+    newId = managers[managers.length - 1].id + 1;
+  }
+
+  // Create a new manager object
+  const newManager = {
+    id: newId,
+    email,
+    password: hashedPassword,
+    super: false // Adjust default super status if needed
+  };
+
+  // Add the new manager to the managers array
+  managers.push(newManager);
+
+  // Write the updated managers list to manager.json
+  writeManagers(managers);
+
+  res.status(201).json({ message: 'Manager registered successfully' });
+});
+
+app.post('/api/auth/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  // Read managers from manager.json
+  const managers = readManagers();
+
+  // Find the manager by email
+  const manager = managers.find((manager) => manager.email === email);
+  if (!manager) {
+    return res.status(401).json({ message: 'Invalid credentials' });
+  }
+
+  // Compare passwords
+  const isPasswordValid = await bcrypt.compare(password, manager.password);
+  if (!isPasswordValid) {
+    return res.status(401).json({ message: 'Invalid credentials' });
+  }
+
+  // Create JWT token
+  const token = jwt.sign({ userId: manager.id, userEmail: manager.email }, 'your_secret_key', {
+    expiresIn: '5m', // Token expires in 5 minutes
+  });
+
+  res.json({ token });
+});
+
+
+// functions
 async function readData() {
   try {
     const data = await fs.readFile(dataPath, 'utf8');

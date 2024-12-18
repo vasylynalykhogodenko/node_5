@@ -1,20 +1,26 @@
 [
-    {
-        "id": 1,
-        "email": "manager1@yahoo.com",
-        "password": "hashed_password",
-        "super": true
-    },
-    {
-        "id": 2,
-        "email": "manager2@yahoo.com",
-        "password": "hashed_password",
-        "super": false
-    },
-    {
-        "id": 3,
-        "email": "manager3@yahoo.com",
-        "password": "hashed_password",
-        "super": true
-    }
+  {
+    "id": 1,
+    "email": "manager1@yahoo.com",
+    "password": "$2a$10$PHCfuV1Bn9h1l7r136uzXe2lhTe.xTv8MXZv46SqQRXQmm0dd7MPe",
+    "super": true
+  },
+  {
+    "id": 2,
+    "email": "manager2@yahoo.com",
+    "password": "$2a$10$5TXwORI2dHgAa.sf/Rii5OM5RJSK5.mwg/lYbVGSpP7y079Wp1OpC",
+    "super": false
+  },
+  {
+    "id": 3,
+    "email": "manager3@yahoo.com",
+    "password": "$2a$10$OpMybJNAd0iMumW/KbletehcvGsK0dUBFqupKo6vHhv45nNMMTFr.",
+    "super": true
+  },
+  {
+    "id": 4,
+    "email": "manager4@yahoo.com",
+    "password": "$2a$10$XjKTDQIRPU73GLYt31Qug.4oqVvfiO7sOXGH9omD7AtGtADT6Ae3C",
+    "super": false
+  }
 ]
