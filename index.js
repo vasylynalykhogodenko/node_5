@@ -3,12 +3,13 @@ const fs = require('fs').promises;
 const path = require('path');
 
 const app = express();
-const port = 3000;
+const PORT = 3000;
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
 const dataPath = path.join(__dirname, 'top250.json');
+const managerPath = path.join(__dirname, 'manager.json');
 
 async function readData() {
   try {
@@ -39,7 +40,7 @@ let films;
 })();
 
 app.get('/api/films/readall', (req, res) => {
-  res.json(films.sort((a, b) => a.position - b.position));
+  res.status(200).json(films.sort((a, b) => a.position - b.position));
 });
 
 app.get('/api/films/read/:id', (req, res) => {
@@ -50,7 +51,7 @@ app.get('/api/films/read/:id', (req, res) => {
     return res.status(404).json({ message: 'Film not found' });
   }
 
-  res.json(film);
+  res.status(200).json(film);
 });
 
 app.post('/api/films/create', (req, res) => {
@@ -126,44 +127,6 @@ app.post('/api/films/update/:id', async (req, res) => {
     }
 });
 
-// app.post('/api/films/update/:id', async (req, res) => {
-//     const { id, ...updateFields } = req.params;
-
-//     const filmIndex = films.findIndex(f => f.id === parseInt(id));
-
-//     if (filmIndex === -1) {
-//       return res.status(404).json({ message: 'Film not found' });
-//     }
-
-//     const allowedFields = ['title', 'rating', 'year', 'budget', 'gross', 'poster', 'position'];
-//     const validUpdateFields = Object.keys(updateFields).filter(key => allowedFields.includes(key));
-
-//     console.log('valid update :', validUpdateFields)
-//     const updatedFilm = { ...films[filmIndex], ...updateFields };
-//     console.log('Updated fields 2:', updateFields)
-
-//     if (updateFields.position) {
-//       const existingFilm = films.find(f => f.position === updateFields.position);
-
-//       if (existingFilm && existingFilm.id !== id) {
-//         films.forEach((film, index) => {
-//           if (film.position >= updateFields.position && film.id !== id) {
-//             film.position++;
-//           }
-//         });
-//       }
-//     }
-
-//    films[filmIndex] = updatedFilm;
-
-//     try {
-//         await writeData(films);
-//         res.json(updatedFilm);
-//     } catch (error) {
-//         console.error('Error updating film:', error);
-//     }
-//   });
-
 app.post('/api/films/delete/:id', (req, res) => {
   const { id } = req.params;
 
@@ -184,6 +147,6 @@ app.post('/api/films/delete/:id', (req, res) => {
   res.json({ message: 'Film deleted' });
 });
 
-app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
 });
