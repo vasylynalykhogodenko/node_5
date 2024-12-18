@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "title": "The Shawshank Redemption",
+    "rating": "9.3",
+    "year": 1994,
+    "budget": 25000000,
+    "gross": 28341469,
+    "poster": "https://image.tmdb.org/t/p/w500/q6y0Go1tsG3QhjrAOX0B40blg4.jpg",
+    "position": 1
+  },
+  {
+    "id": 2,
+    "title": "The Godfather",
+    "rating": "9.2",
+    "year": 1972,
+    "budget": 6000000,
+    "gross": 245066411,
+    "poster": "https://image.tmdb.org/t/p/w500/3bhKrG86F9CF8iYRYs3ik0Pr1.jpg",
+    "position": 2
+  },
+  {
+    "id": 3,
+    "title": "Home Alone",
+    "rating": "10",
+    "year": 1990,
+    "budget": 18000000,
+    "gross": 476700000,
+    "poster": "https://en.wikipedia.org/wiki/Home_Alone#/media/File:Home_alone_poster.jpg",
+    "position": 3
+  },
+  {
+    "id": 4,
+    "title": "The Dark Knight",
+    "rating": "9.0",
+    "year": 2008,
+    "budget": 185000000,
+    "gross": 1006000000,
+    "poster": "https://en.wikipedia.org/wiki/The_Dark_Knight#/media/File:The_Dark_Knight_(2008_film).jpg",
+    "position": 4
+  },
+  {
+    "id": 5,
+    "title": "Fight Club",
+    "rating": "8.8",
+    "year": 1999,
+    "budget": 65000000,
+    "gross": 101000000,
+    "poster": "https://en.wikipedia.org/wiki/Fight_Club#/media/File:Fight_Club_poster.jpg",
+    "position": 5
+  },
+  {
+    "id": 6,
+    "title": "Home Alone 2: Lost in New York",
+    "rating": "6.9",
+    "year": 1992,
+    "budget": 28000000,
+    "gross": 359000000,
+    "poster": "https://en.wikipedia.org/wiki/Home_Alone_2:_Lost_in_New_York#/media/File:Home_Alone_2.jpg",
+    "position": 6
+  }
+]
