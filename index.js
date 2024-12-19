@@ -41,14 +41,6 @@ const authMiddleware = (req, res, next) => {
   } catch (error) {
     return res.status(403).json({ message: 'Invalid token' });
   }
-
-  // try {
-  //   const decoded = jwt.verify(token, 'mysecretkey');
-  //   req.user = decoded;
-  //   next();
-  // } catch (error) {
-  //   return res.status(403).json({ message: 'Invalid token' });
-  // }
 };
 
 app.use((req, res, next) => {
