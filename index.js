@@ -32,11 +32,23 @@ const authMiddleware = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, 'mysecretkey');
-    req.user = decoded;
+    req.manager = {
+      userId: decoded.managerId,
+      userEmail: decoded.managerEmail,
+      super: decoded.super
+    };
     next();
   } catch (error) {
     return res.status(403).json({ message: 'Invalid token' });
   }
+
+  // try {
+  //   const decoded = jwt.verify(token, 'mysecretkey');
+  //   req.user = decoded;
+  //   next();
+  // } catch (error) {
+  //   return res.status(403).json({ message: 'Invalid token' });
+  // }
 };
 
 app.use((req, res, next) => {
@@ -68,13 +80,31 @@ const writeManagers = (managers) => {
 };
 
 // middleware endpoint
-app.get('/protected-route', (req, res) => {
-  const { userId, userEmail } = req.user;
-  res.json({ message: `Hello, ${userEmail}!` });
-});
+app.get('/protected-route', authMiddleware, (req, res) => {
+  if (req.user.super) {
+    res.json({ message: `Hello, ${req.user.userEmail}!`, allData: {
+  posts: [
+    { title: 'Post 1', content: 'Content 1', author: 'Superuser' },
+    { title: 'Post 2', content: 'Content 2', author: 'Simple User' }
+  ],
+  privateData: 'This is sensitive information'
+} });
+  } else {
+    res.json({ message: `Hello, ${req.user.userEmail}!`, limitedData: {
+      posts: [
+        { title: 'Post 1', content: 'Content 1', author: 'Superuser' },
+        { title: 'Post 2', content: 'Content 2', author: 'Simple User' }
+      ]
+    } }) };
+  }
+);
 
 // endpoint manager.json
-app.post('/api/auth/register', async (req, res) => {
+app.post('/api/auth/register', authMiddleware, async (req, res) => {
+  if (!req.user.super) {
+    return res.status(403).json({ message: 'Unauthorized' });
+  }
+
   const { email, password } = req.body;
 
   const managers = readManagers();
